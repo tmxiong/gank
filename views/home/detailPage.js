@@ -6,7 +6,9 @@ import {
     StyleSheet,
     Text,
     View,
-    WebView
+    WebView,
+    Share,
+    ToastAndroid
 } from 'react-native';
 import cfn from '../../commonFun/commonFun'
 import NavBar from '../navBar'
@@ -84,6 +86,28 @@ class detailPage extends Component {
         this.props.dispatch(setCollection(false));
     }
 
+    shareArtical() {
+        const {data} = this.props.navigation.state.params;
+        Share.share({
+            message: data.desc + data.url
+        })
+            .then(this._showResult)
+            .catch((error) => {this.setModalVisible(false)})
+    }
+
+    _showResult(result) {
+        this.setModalVisible(false);
+        if (result.action === Share.sharedAction) {
+            if (result.activityType) {
+                //this.setState({result: 'shared with an activityType: ' + result.activityType});
+            } else {
+                ToastAndroid.show('分享成功！',ToastAndroid.SHORT)
+            }
+        } else if (result.action === Share.dismissedAction) {
+
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -92,7 +116,7 @@ class detailPage extends Component {
                     closeModal={()=>this.setModalVisible(false)}
                     addCollection={this.addCollection.bind(this)}
                     deleteCollection={this.deleteCollection.bind(this)}
-                    //isCollected={this.state.isCollected}
+                    shareArtical={this.shareArtical.bind(this)}
                 />
                 <NavBar
                     leftText="返回"
@@ -111,7 +135,7 @@ class detailPage extends Component {
                     //onNavigationStateChange={this.onNavigationStateChange}
                     //onShouldStartLoadWithRequest={this.onShouldStartLoadWithRequest}
                     startInLoadingState={true}
-                    scalesPageToFit={true}
+                    scalesPageToFit={false}
                 />
             </View>
         );

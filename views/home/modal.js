@@ -35,17 +35,18 @@ class modal extends PureComponent {
 
     closeModal(type) {
 
-        if(type == 'collection') {
+        if(type == 'collection') { //收藏
+
+            this.props.closeModal();
 
             if(this.props.isCollected) {
                 this.props.deleteCollection();
             } else {
                 this.props.addCollection();
             }
+        } else { //分享
+            this.props.shareArtical();
         }
-        this.props.closeModal();
-
-
     }
 
     render() {

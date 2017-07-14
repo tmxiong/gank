@@ -8,7 +8,7 @@ import {
     View,
     StatusBar,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
 } from 'react-native';
 
 import cfn from '../../commonFun/commonFun'

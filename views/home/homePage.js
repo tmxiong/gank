@@ -19,22 +19,9 @@ import ScrollableTabView,{ScrollableTabBar} from 'react-native-scrollable-tab-vi
 import ChildPage from '../home/children/childPage'
 import Storage from 'react-native-storage';
 import Global from '../../commonFun/global';
+import SplashScreen from 'react-native-splash-screen'
 
 import more_icon from '../../images/home/more.png'
-
-/*
-*
-* _id: "592cf7ce421aa92c7be61b70"
- createdAt: "2017-05-30T12:40:46.990Z"
- desc: "一个可以下载离线阅读gitbook的简单iOS App"
- images: Array[1]
- publishedAt: "2017-06-01T14:35:22.88Z"
- source: "web"
- type: "iOS"
- url: "https://github.com/KrisYu/Octobook"
- used: true
- who: "Xue Yu"
-* */
 
 const BASE_URL = 'http://gank.io/api/data/';
 const PAGE_TYPE = ['Android', 'iOS', '前端', '休息视频', '瞎推荐', '拓展资源'];
@@ -47,7 +34,7 @@ export default class homePage extends Component {
     constructor(props) {
         super(props);
         this.state={
-            data:null
+            data:null,
         };
 
         this.showPages=[];
@@ -57,6 +44,9 @@ export default class homePage extends Component {
 
     componentDidMount() {
         this.initStorage();
+        setTimeout(()=>{
+            SplashScreen.hide();
+        },2000)
     }
 
     initStorage() {
