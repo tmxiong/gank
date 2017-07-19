@@ -34,7 +34,7 @@ export default class aboutMe extends Component{
                 />
                 <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
                     <Text style={styles.textStyle}>邮箱: tmxiong@foxmail.com</Text>
-                    <Text style={styles.textStyle}>项目: github.com/tmxiong</Text>
+                    <Text style={styles.textStyle}>项目: github.com/tmxiong/gank</Text>
                 </View>
             </View>
         )

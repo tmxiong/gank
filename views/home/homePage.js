@@ -44,9 +44,12 @@ export default class homePage extends Component {
 
     componentDidMount() {
         this.initStorage();
-        setTimeout(()=>{
-            SplashScreen.hide();
-        },2000)
+        if(Platform.OS == 'android'){
+            setTimeout(()=>{
+                SplashScreen.hide();
+            },2000)
+        }
+
     }
 
     initStorage() {
