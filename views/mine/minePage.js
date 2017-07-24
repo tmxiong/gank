@@ -20,6 +20,7 @@ import history_icon from '../../images/mine/history_icon.png';
 import collection_icon from '../../images/mine/collection_icon.png';
 import about_icon from '../../images/mine/about_icon.png';
 
+import version from '../../data/package.json'
 import {connect} from 'react-redux';
 
 class minePage extends Component {
@@ -124,7 +125,7 @@ class minePage extends Component {
                                 marginLeft:cfn.picWidth(50),marginRight:cfn.picWidth(50)
                             }}
                         />
-                        <Text>关于作者</Text>
+                        <Text>关于 {version.version}</Text>
                         <Image
                             style={{width:cfn.picWidth(40),
                                 resizeMode:'contain',position:'absolute',right:cfn.picWidth(50)}}
