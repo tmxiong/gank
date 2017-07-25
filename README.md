@@ -3,6 +3,7 @@
 ---
 ![image](https://github.com/tmxiong/gank/blob/master/screenshots/home.gif)
 ![image](https://github.com/tmxiong/gank/blob/master/screenshots/fuli.gif)
+![image](https://github.com/tmxiong/gank/blob/master/screenshots/mine.gif)
 
 ## 功能
 ### 整体分为```首页```／```福利```/```我的```三个底部tab导航
