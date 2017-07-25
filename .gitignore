@@ -47,6 +47,16 @@ android/
 # ios
 ios/
 
+# others
+.babelrc
+.buckcongig
+.flowconfig
+.gitattributes
+.gitignore
+.watchmanconfig
+Yarn.lock
+Package-lock.json
+
 __tests__/
 
 # fastlane
