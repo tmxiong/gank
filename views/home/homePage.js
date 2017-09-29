@@ -17,14 +17,19 @@ import {
 import cfn from '../../commonFun/commonFun'
 import ScrollableTabView,{ScrollableTabBar} from 'react-native-scrollable-tab-view'
 import ChildPage from '../home/children/childPage'
+import ZonghePage from '../home/children/zonghePage';
 import Storage from 'react-native-storage';
 import Global from '../../commonFun/global';
 import SplashScreen from 'react-native-splash-screen'
 
-import more_icon from '../../images/home/more.png'
+import search_icon from '../../images/home/search_icon.png'
 
 const BASE_URL = 'http://gank.io/api/data/';
-const PAGE_TYPE = ['Android', 'iOS', '前端', '休息视频', '瞎推荐', '拓展资源'];
+const PAGE_TYPE = ['综合', 'iOS', 'Android',  '前端', '休息视频', '瞎推荐', '拓展资源'];
+
+// 每日数据 http://gank.io/api/day/2015/08/06
+// 发过干货的日期 http://gank.io/api/day/history
+
 export default class homePage extends Component {
 
     static defaultProps = {
@@ -96,8 +101,14 @@ export default class homePage extends Component {
     }
 
     renderChildPage() {
-        let pages = [];
-        for(let i = 0; i < PAGE_TYPE.length; i++) {
+        let pages = [
+            <ZonghePage
+                key={0}
+                tabLabel={PAGE_TYPE[0]}
+                navigation={this.props.navigation}
+            />
+        ];
+        for(let i = 1; i < PAGE_TYPE.length; i++) {
             pages.push(
                 <ChildPage
                     key={i}
@@ -124,8 +135,8 @@ export default class homePage extends Component {
                         justifyContent:'center',
                         zIndex:2,
                     }}>
-                    <Image source={more_icon}
-                           style={{width:cfn.picWidth(30),height:cfn.picHeight(25),
+                    <Image source={search_icon}
+                           style={{width:cfn.picWidth(40),height:cfn.picHeight(40),resizeMode:'contain'
                            }}/>
                 </TouchableOpacity>
                 <ScrollableTabView
@@ -140,6 +151,7 @@ export default class homePage extends Component {
                 >
                     {this.renderChildPage()}
                 </ScrollableTabView>
+                <View style={{height: 50}}/>
             </View>
         );
     }

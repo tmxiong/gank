@@ -29,6 +29,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import cfn from '../../commonFun/commonFun'
 import NavBar from '../navBar';
 import SortModal from './modal'
+import MyImage from '../../components/myImage';
 
 import find_icon from '../../images/find/find_icon.png'
 import sort_icon from '../../images/find/sort_icon.png'
@@ -112,7 +113,7 @@ class fuliPage extends Component {
                 this.setData(data.results);
             })
             .catch((err)=> {
-                alert(err);
+                //alert(err);
             })
     }
 
@@ -126,7 +127,10 @@ class fuliPage extends Component {
     setData(data) {
         if (this.state.isRefreshing) this.data = [];
         this.data = this.data.concat(data);
-        this.setState({ds: this.state.ds.cloneWithRows(this.data)});
+        this.setState({
+            ds: this.state.ds.cloneWithRows(this.data),
+            isRefreshing: false
+        });
 
     }
 
@@ -203,8 +207,7 @@ class fuliPage extends Component {
 
 
     renderRow(rowData) {
-        let img_width = cfn.deviceWidth() - cfn.picWidth(30);
-        let img_height = cfn.picHeight(800);
+
         let url = this.formateUrl(rowData.url,'mw690');
         //console.log(url);
         return (
@@ -219,16 +222,8 @@ class fuliPage extends Component {
                 activeOpacity={0.8}
                 onPress={()=>this.setImageModalVisible(true, rowData.url)}
             >
-                <Image
-                    source={{uri: url}}
-                    style={{
-                        width: img_width,
-                        minHeight: img_height,
-                        //flex: 1,
-                        //resizeMode: 'contain',
-                        borderRadius: 5,
-                        alignSelf: 'center'
-                    }}
+                <MyImage
+                    uri={url}
                 />
             </TouchableOpacity>
         )
@@ -240,11 +235,11 @@ class fuliPage extends Component {
         }, ()=> {
             this.getData();
 
-            setTimeout(()=> {
-                this.setState({
-                    isRefreshing: false
-                });
-            }, 1500);
+            // setTimeout(()=> {
+            //     this.setState({
+            //         isRefreshing: false
+            //     });
+            // }, 1500);
 
         });
 
@@ -302,6 +297,7 @@ class fuliPage extends Component {
                     rightIcon={sort_icon}
                     rightFn={()=>this.setSortModalVisible(true)}
                     middleFn={()=>this._scrollTotop()}
+                    leftIcon={null}
                 />
 
                 {this.data.length == 0 ?
@@ -327,6 +323,7 @@ class fuliPage extends Component {
                     }
                     onEndReached={this._onEndReached.bind(this)}
                     ref={(ref)=>this._listView = ref}
+                    enableEmptySections={true}
                 />
             </View>
         );
@@ -341,7 +338,6 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fff',
         flex: 1
     },
     itemContainer: {

@@ -1,4 +1,5 @@
 
+
 import {StyleSheet,} from 'react-native';
 import commonFun from '../commonFun/commonFun'
 
@@ -11,20 +12,21 @@ module.exports = StyleSheet.create({
     },
     content: {
         position: 'absolute',
-        width:commonFun.picWidth(100),
+        width:commonFun.picWidth(150),
         height:commonFun.picWidth(100),
         justifyContent:'center',
         alignItems:'center',
-        //top:commonFun.picWidth(20)
     },
     ImageStyle: {
-        width:commonFun.picWidth(60),
-        height:commonFun.picWidth(50),
-        alignSelf:'center'
+        width:commonFun.picWidth(40),
+        height:commonFun.picWidth(40),
+        alignSelf:'center',
+        resizeMode:'contain'
 
     },
     TextStyle: {
-        fontSize: 18,
+        fontSize: 14,
+        backgroundColor:'transparent'
         //top:commonFun.picWidth(20)
     },
 });

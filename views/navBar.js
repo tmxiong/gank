@@ -12,7 +12,7 @@ import {
     StatusBar,
     Platform
 } from 'react-native';
-const styles=require('../styles/navBarStyle');
+import styles from'../styles/navBarStyle';
 import cfn from '../commonFun/commonFun'
 export default class navBar extends PureComponent {
     constructor(props) {
@@ -25,8 +25,9 @@ export default class navBar extends PureComponent {
 
     static defaultProps = {
         bgColor: '#0F88EE',
+        bgImg: null,
         leftText: null,
-        leftIcon: null,
+        leftIcon: require('../images/navbar_back.png'),
         middleText: null,
         middleView: null,
         rightText: null,
@@ -35,14 +36,30 @@ export default class navBar extends PureComponent {
         leftFn: ()=>{},
         rightFn: ()=>{},
         middleFn: ()=>{},
+        modalState: false,
+        isFloat: false,
+        navBarHeight: Platform.OS == 'ios' ? cfn.picHeight(200) : cfn.picHeight(200),// 导航栏 的高度
 
-        navBarHeight: 100,// 导航栏 的高度
     };
 
-    componentDidMount() {
+    initSetState() {
+        this.mountable = true;
+        let oldSetState = this.setState;
+        this.setState = function(obj, callback) {
+            if(this.mountable) {
+                oldSetState.call(this,obj)
+            }
+        };
+    }
 
+    componentDidMount() {
+        this.initSetState();
         this.renderLeft();
         this.renderRight();
+    }
+
+    componentWillUnmount() {
+        this.mountable = false;
     }
 
     renderLeft() {
@@ -50,18 +67,22 @@ export default class navBar extends PureComponent {
         let leftView = null;
         if(props.leftIcon != null){
             leftView = (
-                <TouchableOpacity style={[styles.content,{left:5,}]}
-                                  onPress={()=>props.leftFn()}>
-                <View style={[styles.content,{left:5}]}>
-                    <Image style={[styles.ImageStyle,{alignSelf:'flex-start'}]} source={props.leftIcon}/>
-                </View>
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    style={[styles.content,{left:5,}]}
+                    onPress={()=>props.leftFn()}>
+                    <View style={[styles.content,{left:5}]}>
+                        <Image style={[styles.ImageStyle,{alignSelf:'flex-start'}]} source={props.leftIcon}/>
+                    </View>
                 </TouchableOpacity>);
         }else if(props.leftText != null){
-            leftView = (<TouchableOpacity style={[styles.content,{left:5}]}
-                    onPress={()=>props.leftFn()}
-                >
-                    <Text style={[styles.TextStyle,{color:props.textColor},{alignSelf:'flex-start'}]}>{props.leftText}</Text>
-                </TouchableOpacity>);
+            leftView = (<TouchableOpacity
+                activeOpacity={0.8}
+                style={[styles.content,{left:5}]}
+                onPress={()=>props.leftFn()}
+            >
+                <Text style={[styles.TextStyle,{color:props.textColor},{alignSelf:'flex-start'}]}>{props.leftText}</Text>
+            </TouchableOpacity>);
         }
 
         this.setState({leftView: leftView})
@@ -71,18 +92,22 @@ export default class navBar extends PureComponent {
         let rightView = null;
         if(props.rightIcon != null){
             rightView = (
-                <TouchableOpacity style={[styles.content,{right:5,}]}
-                                  onPress={()=>props.rightFn()}>
-                <View style={[styles.content,{right:5}]}>
-                    <Image style={[styles.ImageStyle,{alignSelf:'flex-end'}]} source={props.rightIcon}/>
-                </View>
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    style={[styles.content,{right:5,}]}
+                    onPress={()=>props.rightFn()}>
+                    <View style={[styles.content,{right:5}]}>
+                        <Image style={[styles.ImageStyle,{alignSelf:'flex-end'}]} source={props.rightIcon}/>
+                    </View>
                 </TouchableOpacity>
             )
         }else if(props.rightText != null){
-            rightView = (<TouchableOpacity style={[styles.content,{right:5,}]}
-                                  onPress={()=>props.rightFn()}>
-                    <Text style={[styles.TextStyle,{color:props.textColor},{alignSelf:'flex-end'}]}>{props.rightText}</Text>
-                </TouchableOpacity>)
+            rightView = (<TouchableOpacity
+                activeOpacity={0.8}
+                style={[styles.content,{right:5,}]}
+                onPress={()=>props.rightFn()}>
+                <Text style={[styles.TextStyle,{color:props.textColor},{alignSelf:'flex-end'}]}>{props.rightText}</Text>
+            </TouchableOpacity>)
         }
         this.setState({rightView: rightView})
     }
@@ -92,6 +117,7 @@ export default class navBar extends PureComponent {
         if(props.middleText != null){
             middle = (
                 <TouchableOpacity
+                    activeOpacity={0.8}
                     onPress={()=>props.middleFn()}>
                     <Text style={[styles.TextStyle,{color:props.textColor}]}>
                         {props.middleText}
@@ -101,8 +127,8 @@ export default class navBar extends PureComponent {
         } else if (props.middleView != null){
             middle = (
                 <View style={{alignSelf:'center',
-                            //top:commonFun.picWidth(10)
-                        }}>
+                    //top:commonFun.picWidth(10)
+                }}>
                     {props.middleView}
                 </View>
             )
@@ -113,13 +139,16 @@ export default class navBar extends PureComponent {
         let props = this.props;
         let statusBarHeight = Platform.OS == 'ios' ? cfn.picHeight(46) : StatusBar.currentHeight;
         const{navBarHeight}=this.props;
+        if(this.props.modalState && Platform.OS == 'android') statusBarHeight = 0;
         return (
-            <View style={[
-                {backgroundColor: props.bgColor,
-                    height:cfn.picHeight(navBarHeight) + statusBarHeight,
-                    justifyContent:'flex-end'
-                },
+            <View
+                style={[
+                    {backgroundColor: props.bgColor,width:cfn.deviceWidth(),
+                        height:cfn.picHeight(navBarHeight) + statusBarHeight,
+                        justifyContent:'flex-end'
+                    },
                 ]}>
+                <StatusBar hidden={false}  translucent= {true} backgroundColor={'transparent'} barStyle={'light-content'}/>
                 <View style={{height:cfn.picHeight(navBarHeight),width:cfn.deviceWidth(),
                     flexDirection: 'row',alignItems:'center',justifyContent:'center'}}>
 

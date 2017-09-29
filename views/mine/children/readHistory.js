@@ -12,7 +12,8 @@ import {
     ListView,
     Image,
     TouchableOpacity,
-    Platform
+    Platform,
+    Alert,
 } from 'react-native';
 import NavBar from '../../navBar'
 import cfn from '../../../commonFun/commonFun'
@@ -26,6 +27,7 @@ export default class readHistory extends Component{
         super(props);
         this.state={
             ds: new ListView.DataSource({rowHasChanged: (r1, r2)=> r1 !== r2}),
+            data:[],
         };
 
     }
@@ -47,7 +49,10 @@ export default class readHistory extends Component{
     }
 
     setData(data) {
-        this.setState({ds:this.state.ds.cloneWithRows(data)})
+        this.setState({
+            data:data,
+            ds:this.state.ds.cloneWithRows(data)
+        })
     }
 
     goBack() {
@@ -83,13 +88,36 @@ export default class readHistory extends Component{
         )
     }
 
+    clearData() {
+        if (this.state.data.length == 0) {
+            return Alert.alert( '提示',
+                '没有历史记录',
+                [
+                    {text: '确定', onPress: ()=> {}},
+                ]);
+        }
+        Alert.alert( '清除历史记录',
+            '确定要清除历史记录？',
+            [
+                {text: '确定', onPress: ()=> this.clearAllOk()},
+                {text: '取消', onPress: ()=> {}}
+            ]);
+    }
+
+    clearAllOk() {
+        Global.storage.clearMapForKey('readHistory');
+        this.getReadHistory();
+    }
+
     render() {
         return(
-            <View style={{backgroundColor:'#fff',flex:1}}>
+            <View style={styles.container}>
                 <NavBar
                     leftText="返回"
                     leftFn={()=>this.goBack()}
                     middleText="阅读记录"
+                    rightText="清除记录"
+                    rightFn={()=>this.clearData()}
                 />
                 <ListView
                     style={{width:cfn.deviceWidth(),}}
@@ -97,6 +125,7 @@ export default class readHistory extends Component{
                     renderRow={this._renderRow.bind(this)}
                     enableEmptySections={true}
                 />
+                {this.state.data.length == 0 ? <Text style={{position:'absolute',color:'#ddd'}}>暂无阅读记录</Text> : null}
             </View>
         )
     }

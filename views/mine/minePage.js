@@ -9,6 +9,7 @@ import {
     StatusBar,
     Image,
     TouchableOpacity,
+    Alert,
 } from 'react-native';
 
 import cfn from '../../commonFun/commonFun'
@@ -35,12 +36,13 @@ class minePage extends Component {
             <View style={styles.container}>
                 <NavBar
                 middleText="我的"
+                leftIcon={null}
                 />
                 <View >
                     <View style={{width:cfn.deviceWidth(),
                         height:cfn.picHeight(250),backgroundColor:'#fff',
                         alignItems:'center',
-                        borderBottomColor:'#dedede',
+                        borderBottomColor:'#eee',
                         justifyContent:'center',
                         borderBottomWidth:1,}}>
                         <View style={{
@@ -58,20 +60,13 @@ class minePage extends Component {
                                 height:cfn.picWidth(150),
                             }}/>
                         </View>
-                        <Text style={{fontSize:20,marginTop:cfn.picWidth(10)}}>干果gank</Text>
-                        <Text style={{fontSize:12,marginTop:cfn.picWidth(10)}}>你要的全都有</Text>
+                        <Text style={{fontSize:20,marginTop:cfn.picWidth(10)}}>干货集中营</Text>
+                        <Text style={{fontSize:12,marginTop:cfn.picWidth(10)}}>小而美的第三方gank.io客户端</Text>
                     </View>
                     <TouchableOpacity
                         activeOpacity={0.8}
                         onPress={()=>this.goToDetail('History')}
-                        style={{
-                        width:cfn.deviceWidth(),
-                        height:cfn.picHeight(100),backgroundColor:'#fff',
-                        alignItems:'center',
-                        borderBottomColor:'#dedede',
-                        borderBottomWidth:1,
-                        marginTop:cfn.picHeight(50),
-                        flexDirection:'row'}}>
+                        style={[styles.itemContainer,{marginTop:cfn.picHeight(50),}]}>
                         <Image
                             source={history_icon}
                             style={{width:cfn.picWidth(40),resizeMode:'contain',
@@ -88,13 +83,7 @@ class minePage extends Component {
                     <TouchableOpacity
                         activeOpacity={0.8}
                         onPress={()=>this.goToDetail('Collection')}
-                        style={{
-                        width:cfn.deviceWidth(),
-                        height:cfn.picHeight(100),backgroundColor:'#fff',
-                        alignItems:'center',
-                        borderBottomColor:'#dedede',
-                        borderBottomWidth:1,
-                        flexDirection:'row'}}>
+                        style={styles.itemContainer}>
                         <Image
                             source={collection_icon}
                             style={{width:cfn.picWidth(40),resizeMode:'contain',
@@ -110,22 +99,15 @@ class minePage extends Component {
                     </TouchableOpacity>
                     <TouchableOpacity
                         activeOpacity={0.8}
-                        onPress={()=>this.goToDetail('About')}
-                        style={{
-                        width:cfn.deviceWidth(),
-                        height:cfn.picHeight(100),backgroundColor:'#fff',
-                        alignItems:'center',
-                        borderBottomColor:'#dedede',
-                        borderBottomWidth:1,
-                        marginTop:cfn.picHeight(50),
-                        flexDirection:'row'}}>
+                        onPress={()=>Alert.alert('反馈邮箱：','tmxiong@foxmail.com')}
+                        style={[styles.itemContainer,{marginTop:cfn.picHeight(50),}]}>
                         <Image
                             source={about_icon}
                             style={{width:cfn.picWidth(40),resizeMode:'contain',
                                 marginLeft:cfn.picWidth(50),marginRight:cfn.picWidth(50)
                             }}
                         />
-                        <Text>关于 {version.version}</Text>
+                        <Text>我要反馈</Text>
                         <Image
                             style={{width:cfn.picWidth(40),
                                 resizeMode:'contain',position:'absolute',right:cfn.picWidth(50)}}
@@ -143,7 +125,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        //backgroundColor: '#F5FCFF',
     },
     welcome: {
         fontSize: 20,
@@ -155,6 +137,14 @@ const styles = StyleSheet.create({
         color: '#333333',
         marginBottom: 5,
     },
+    itemContainer: {
+        width:cfn.deviceWidth(),
+        height:cfn.picHeight(100),backgroundColor:'#fff',
+        alignItems:'center',
+        borderBottomColor:'#eee',
+        borderBottomWidth:1,
+        flexDirection:'row'
+    }
 });
 
 function setIcon(store) {

@@ -31,6 +31,7 @@ class detailPage extends Component {
     }
 
     componentDidMount() {
+        this.props.dispatch(setCollection(false));
         this.getIsCollected();
     }
 
@@ -47,7 +48,7 @@ class detailPage extends Component {
         let rowData = this.props.navigation.state.params.data;
         Global.storage.getAllDataForKey('collection').then((data) => {
             if(data.length == 0) return;
-            for (let i in data) {
+            for (let i = 0; i < data.length; i++) {
                 if(data[i]._id == rowData._id){
                     this.props.dispatch(setCollection(true));
                     break;
@@ -109,6 +110,7 @@ class detailPage extends Component {
     }
 
     render() {
+        //console.log(this.props.navigation.state.params.url);
         return (
             <View style={styles.container}>
                 <Modal

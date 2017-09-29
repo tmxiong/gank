@@ -12,13 +12,13 @@ import {
     ListView,
     Image,
     TouchableOpacity,
-    Platform
+    Platform,
+    Alert,
+    DeviceEventEmitter
 } from 'react-native';
 import NavBar from '../../navBar'
 import cfn from '../../../commonFun/commonFun'
 import Global from '../../../commonFun/global';
-
-
 
 export default class myCollection extends Component{
 
@@ -26,19 +26,26 @@ export default class myCollection extends Component{
         super(props);
         this.state={
             ds: new ListView.DataSource({rowHasChanged: (r1, r2)=> r1 !== r2}),
+            data:[],
         };
 
     }
 
     componentDidMount() {
-        this.getReadHistory();
+        this.getCollection();
+        this.collectionListener = DeviceEventEmitter.addListener('collection',()=>{
+            this.getCollection();
+        })
     }
 
+    componentWillUnmount() {
+        this.collectionListener.remove();
+    }
     goToDetail(route,params) {
         this.props.navigation.navigate(route,params);
     }
 
-    getReadHistory() {
+    getCollection() {
         // 获取某个key下的所有数据
         Global.storage.getAllDataForKey('collection').then((data) => {
             this.setData(data);
@@ -47,7 +54,10 @@ export default class myCollection extends Component{
     }
 
     setData(data) {
-        this.setState({ds:this.state.ds.cloneWithRows(data)})
+        this.setState({
+            ds:this.state.ds.cloneWithRows(data),
+            data:data
+        })
     }
 
     goBack() {
@@ -83,13 +93,36 @@ export default class myCollection extends Component{
         )
     }
 
+    clearData() {
+        if (this.state.data.length == 0) {
+            return Alert.alert( '提示',
+                '没有收藏记录',
+                [
+                    {text: '确定', onPress: ()=> {}},
+                ]);
+        }
+        Alert.alert( '清除所有收藏',
+            '确定要清清除所有收藏？',
+            [
+                {text: '确定', onPress: ()=> this.clearAllOk()},
+                {text: '取消', onPress: ()=> {}}
+            ]);
+    }
+
+    clearAllOk() {
+        Global.storage.clearMapForKey('collection');
+        this.getCollection();
+    }
+
     render() {
         return(
-            <View style={{backgroundColor:'#fff',flex:1}}>
+            <View style={styles.container}>
                 <NavBar
                     leftText="返回"
                     leftFn={()=>this.goBack()}
                     middleText="我的收藏"
+                    rightText="清除收藏"
+                    rightFn={()=>this.clearData()}
                 />
                 <ListView
                     style={{width:cfn.deviceWidth(),}}
@@ -97,11 +130,11 @@ export default class myCollection extends Component{
                     renderRow={this._renderRow.bind(this)}
                     enableEmptySections={true}
                 />
+                {this.state.data.length == 0 ? <Text style={{position:'absolute',color:'#ddd'}}>暂无收藏记录</Text> : null}
             </View>
         )
     }
 }
-
 
 const styles = StyleSheet.create({
     container: {

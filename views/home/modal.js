@@ -9,7 +9,8 @@ import {
     Image,
     Modal,
     TouchableOpacity,
-    Platform
+    Platform,
+    DeviceEventEmitter
 } from 'react-native';
 
 import NavBar from '../navBar'
@@ -24,19 +25,19 @@ import share from '../../images/home/share_icon.png';
 class modal extends PureComponent {
 
     static defaultProps={
+        isCollected: false,
 
-    };
+};
 
     constructor(props){
         super(props);
-
     }
 
 
     closeModal(type) {
 
         if(type == 'collection') { //收藏
-
+            DeviceEventEmitter.emit('collection');
             this.props.closeModal();
 
             if(this.props.isCollected) {
