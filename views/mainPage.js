@@ -50,7 +50,7 @@ const mainPage = TabNavigator({
         //以下参数也可放置在MinePage.js页面
         navigationOptions: {
             header:null,
-            tabBarLabel: '我的',
+            tabBarLabel: '更多',
             tabBarIcon: ({ tintColor }) => (
                 <Image
                     source={

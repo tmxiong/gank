@@ -65,26 +65,31 @@ export default class myCollection extends Component{
     }
 
     _renderRow(rowData) {
+        let bgColor = cfn.getBgColor(rowData.type);
         return(
             <View style={styles.itemContainer}>
                 <TouchableOpacity
                     activeOpacity={0.8}
+                    style={{marginTop:cfn.picHeight(15),
+                        marginBottom:cfn.picHeight(15),width:cfn.deviceWidth()}}
                     onPress={()=>this.goToDetail('Detail',{
                         title:rowData.desc,
                         url:rowData.url,
                         data: rowData,
                     })}
                 >
-                    <Text
-                        style={{width: Platform.OS == 'ios' ?
-                        cfn.deviceWidth() - cfn.picWidth(30) :
-                        cfn.deviceWidth() - cfn.picWidth(60),
-                            color:'#666'
+                    <View style={{flexDirection:'row',width:cfn.deviceWidth()-cfn.picWidth(70)}}>
+                        <View style={[styles.point,{backgroundColor:bgColor}]}/>
+                        <Text style={{color:'#333',flexWrap:'wrap',
+                            marginLeft:cfn.picWidth(10),}}>
+                            {rowData.desc}
+                        </Text>
+                    </View>
 
-                        }}>
-                        {rowData.desc}
-                    </Text>
-                    <View  style={{flexDirection:'row',alignItems:'center',justifyContent:'flex-start',marginTop:cfn.picHeight(15),}}>
+                    <View  style={{flexDirection:'row',
+                        alignItems:'center',
+                        justifyContent:'flex-start',
+                        marginTop:cfn.picHeight(15),marginLeft:cfn.picWidth(60)}}>
                         <Text style={styles.textStyle}>{rowData.who == null || rowData.who == 'undefined' ? '匿名 ' : rowData.who} </Text>
                         <Text style={styles.textStyle}>{rowData.publishedAt.substring(0,10)}</Text>
                     </View>
@@ -144,20 +149,24 @@ const styles = StyleSheet.create({
         flex: 1
     },
     itemContainer: {
-        width:cfn.deviceWidth() - cfn.picWidth(30),
         backgroundColor:'#fff',
         alignSelf: 'center',
         minHeight:cfn.picHeight(80),
         justifyContent:'center',
-        borderBottomColor:'#dedede',
+        borderBottomColor:'#ddd',
         borderBottomWidth: 1,
         alignItems: 'center',
-        paddingTop:cfn.picHeight(15),
-        paddingBottom:cfn.picHeight(15),
     },
     textStyle: {
         color:'#888',
         fontSize: 10,
         lineHeight:10
     },
+    point: {
+        width:cfn.picWidth(40),
+        height:cfn.picWidth(40),
+        backgroundColor:'#f90',
+        borderRadius:cfn.picWidth(20),
+        marginLeft:cfn.picWidth(10)
+    }
 });

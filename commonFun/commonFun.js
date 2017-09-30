@@ -27,4 +27,33 @@ module.exports = {
     deviceWidth() {
         return width;
     },
+    getBgColor(title) {
+        var bgColor = '#fff';
+
+        switch (title) {
+            case 'iOS':
+                bgColor = '#666666';
+                break;
+            case 'Android':
+                bgColor = '#98BE48';
+                break;
+            case '前端':
+                bgColor = '#D55F42';
+                break;
+            case '休息视频':
+                bgColor = '#0F83BE';
+                break;
+            case '瞎推荐':
+                bgColor = '#DCB361';
+                break;
+            case '拓展资源':
+                bgColor = '#e7c';
+                break;
+            default:
+                break;
+
+        }
+
+        return bgColor;
+    }
 };

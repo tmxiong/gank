@@ -20,14 +20,14 @@ import default_icon from '../../images/mine/default_icon.png';
 import history_icon from '../../images/mine/history_icon.png';
 import collection_icon from '../../images/mine/collection_icon.png';
 import about_icon from '../../images/mine/about_icon.png';
+import welcome_icon from '../../images/mine/welcome_icon.png';
 
-import version from '../../data/package.json'
 import {connect} from 'react-redux';
 
 class minePage extends Component {
 
     goToDetail(route ,params) {
-        this.props.navigation.navigate(route);
+        this.props.navigation.navigate(route, params);
     }
 
     render() {
@@ -60,8 +60,8 @@ class minePage extends Component {
                                 height:cfn.picWidth(150),
                             }}/>
                         </View>
-                        <Text style={{fontSize:20,marginTop:cfn.picWidth(10)}}>干货集中营</Text>
-                        <Text style={{fontSize:12,marginTop:cfn.picWidth(10)}}>小而美的第三方gank.io客户端</Text>
+                        {/*<Text style={{fontSize:20,marginTop:cfn.picWidth(10)}}>干货集中营</Text>*/}
+                        <Text style={{fontSize:12,marginTop:cfn.picWidth(20),color:'#888'}}>小而美的第三方gank.io客户端</Text>
                     </View>
                     <TouchableOpacity
                         activeOpacity={0.8}
@@ -97,9 +97,28 @@ class minePage extends Component {
                             source={more}
                         />
                     </TouchableOpacity>
+
                     <TouchableOpacity
                         activeOpacity={0.8}
-                        onPress={()=>Alert.alert('反馈邮箱：','tmxiong@foxmail.com')}
+                        onPress={()=>this.goToDetail('Welcome',{showWebView:false,url:'h'})}
+                        style={[styles.itemContainer,{marginTop:cfn.picHeight(50),}]}>
+                        <Image
+                            source={welcome_icon}
+                            style={{width:cfn.picWidth(40),resizeMode:'contain',
+                                marginLeft:cfn.picWidth(50),marginRight:cfn.picWidth(50)
+                            }}
+                        />
+                        <Text>我的欢迎页</Text>
+                        <Image
+                            style={{width:cfn.picWidth(40),
+                                resizeMode:'contain',position:'absolute',right:cfn.picWidth(50)}}
+                            source={more}
+                        />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={()=>Alert.alert('反馈邮箱：','2439151289@qq.com')}
                         style={[styles.itemContainer,{marginTop:cfn.picHeight(50),}]}>
                         <Image
                             source={about_icon}

@@ -4,8 +4,20 @@ import DetailPage from './views/home/detailPage'
 import MyCollectionPage from './views/mine/children/myCollection';
 import ReadHistoryPage from './views/mine/children/readHistory';
 import AboutMePage from './views/mine/children/aboutMe';
+import LaunchPage from './views/launchPage';
+import WelcomePage from './views/welcomePage';
+import CpWebView from './views/cpWebView/CPWebViewPage';
+
+import onBackAndroid from './commonFun/onBackAndroid'
+onBackAndroid.bindHardwareBackPress();
 
 const routers = StackNavigator({
+    Launch: {
+        screen: LaunchPage
+    },
+    Welcome: {
+        screen: WelcomePage
+    },
     Main: {
         screen: MainPage,
     },
@@ -32,6 +44,9 @@ const routers = StackNavigator({
         navigationOptions:{
             header:null
         }
+    },
+    CPWebView: {
+        screen: CpWebView
     }
 
 

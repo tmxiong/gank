@@ -11,7 +11,8 @@ import {
     DeviceEventEmitter,
     TextInput,
     Platform,
-    ScrollView
+    ScrollView,
+    RefreshControl
 } from 'react-native';
 
 import cfn from '../../../commonFun/commonFun'
@@ -30,8 +31,9 @@ export default class zonghePage extends Component {
     constructor(props){
         super(props);
         this.state={
-            imgUrl:'',
-            items: null
+            imgUrl:'1',
+            items: null,
+            isRefreshing:false,
         }
     }
 
@@ -40,7 +42,7 @@ export default class zonghePage extends Component {
     }
 
     componentWillUnmount() {
-        this.findListener.remove();
+
     }
     getData() {
         fetch(day_url)
@@ -72,7 +74,8 @@ export default class zonghePage extends Component {
 
         this.setState({
             imgUrl:fuli[0].url,
-            items: items
+            items: items,
+            isRefreshing:false,
         })
     }
 
@@ -94,31 +97,7 @@ export default class zonghePage extends Component {
     }
 
     renderSections(title,items) {
-        var bgColor = '#fff';
-
-        switch (title) {
-            case 'iOS':
-                bgColor = '#666666';
-                break;
-            case 'Android':
-                bgColor = '#98BE48';
-                break;
-            case '前端':
-                bgColor = '#D55F42';
-                break;
-            case '休息视频':
-                bgColor = '#0F83BE';
-                break;
-            case '瞎推荐':
-                bgColor = '#DCB361';
-                break;
-            case '拓展资源':
-                bgColor = '#e7c';
-                break;
-            default:
-                break;
-
-        }
+        var bgColor = cfn.getBgColor(title);
 
         return(
             <View
@@ -148,7 +127,7 @@ export default class zonghePage extends Component {
                     style={styles.item}>
                     <Text style={styles.title_text}>{data[i].desc}</Text>
                     <View style={styles.author}>
-                        <Text style={{color:'#888',fontSize:12}}>{data[i].who}</Text>
+                        <Text style={{color:'#888',fontSize:12}}>{data[i].who == null || data[i].who == 'undefined' ? '匿名 ' : data[i].who}</Text>
                         <Text style={{color:'#888',fontSize:12,marginLeft:cfn.picHeight(10)}}>{data[i].publishedAt.replace('T','  ')}</Text>
                     </View>
                 </TouchableOpacity>
@@ -169,20 +148,44 @@ export default class zonghePage extends Component {
         return sections;
     }
 
+    _onRefresh() {
+        this.setState({isRefreshing:true});
+        this.getData()
+    }
+
     render() {
         return (
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.isRefreshing}
+                        onRefresh={this._onRefresh.bind(this)}
+                        tintColor="#000"
+                        title="正在刷新..."
+                        titleColor="#000"
+                        colors={['#000']}
+                        progressBackgroundColor="#fff"
+                    />
+                }
+            >
                 <View  style={styles.container}>
-                    {!this.state.items ?
-                        <View style={{position:'absolute',top:cfn.deviceHeight()/2}}>
-                            <Text style={{color:'#888'}}>正在加载...</Text>
-                        </View>
-                        : null}
                     <Image source={{uri:this.state.imgUrl}}
                            style={styles.titleImg}
                     />
+                        {/*水印*/}
+                        {/*<View style={{width:cfn.deviceWidth(),justifyContent:'center',*/}
+                            {/*height:cfn.picHeight(70),alignItems:'center',*/}
+                        {/*}}>*/}
+                            {/*<Text>测试版</Text>*/}
+                        {/*</View>*/}
+
                         {this.state.items}
                     </View>
+                {!this.state.items ?
+                    <View style={{position:'absolute',alignSelf:'center',top:cfn.deviceHeight()/2-cfn.picHeight(100)}}>
+                        <Text style={{color:'#888'}}>正在加载...</Text>
+                    </View>
+                    : null}
                 <View style={{height: 10}}/>
             </ScrollView>
         );
@@ -193,7 +196,7 @@ export default class zonghePage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         alignItems: 'center',
     },
     titleImg: {

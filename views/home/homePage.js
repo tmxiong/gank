@@ -19,8 +19,6 @@ import ScrollableTabView,{ScrollableTabBar} from 'react-native-scrollable-tab-vi
 import ChildPage from '../home/children/childPage'
 import ZonghePage from '../home/children/zonghePage';
 import Storage from 'react-native-storage';
-import Global from '../../commonFun/global';
-import SplashScreen from 'react-native-splash-screen'
 
 import search_icon from '../../images/home/search_icon.png'
 
@@ -47,41 +45,6 @@ export default class homePage extends Component {
 
     }
 
-    componentDidMount() {
-        this.initStorage();
-        if(Platform.OS == 'android'){
-            setTimeout(()=>{
-                SplashScreen.hide();
-            },2000)
-        }
-
-    }
-
-    initStorage() {
-        Global.storage = new Storage({
-            // 最大容量，默认值1000条数据循环存储
-            size: 1000,
-
-            // 存储引擎：对于RN使用AsyncStorage，对于web使用window.localStorage
-            // 如果不指定则数据只会保存在内存中，重启后即丢失
-            storageBackend: AsyncStorage,
-
-            // 数据过期时间，默认一整天（1000 * 3600 * 24 毫秒），设为null则永不过期
-            defaultExpires: null,
-
-            // 读写时在内存中缓存数据。默认启用。
-            enableCache: true,
-
-            // 如果storage中没有相应数据，或数据已过期，
-            // 则会调用相应的sync方法，无缝返回最新数据。
-            // sync方法的具体说明会在后文提到
-            // 你可以在构造函数这里就写好sync的方法
-            // 或是写到另一个文件里，这里require引入
-            // 或是在任何时候，直接对storage.sync进行赋值修改
-            sync: require('../../data/sync')  // 这个sync文件是要你自己写的
-        })
-    }
-
     getIndex(obj) {
         let currentType = null;
         let len = this.showPages.length;
@@ -93,7 +56,7 @@ export default class homePage extends Component {
                 //📃页面未曾被加载
                 currentType = PAGE_TYPE[obj.i];
                 //this.getData(currentType, obj.i);
-                console.log(currentType);
+                //console.log(currentType);
             }
 
         }
@@ -124,23 +87,24 @@ export default class homePage extends Component {
             <View style={{width:cfn.deviceWidth(),height:cfn.deviceHeight(),backgroundColor:'#fff'}}>
                 <StatusBar backgroundColor="transparent" barStyle="light-content"/>
                 <View style={{width:cfn.deviceWidth(), height:cfn.picHeight(50), backgroundColor:'#0F88EE'}}/>
-                <TouchableOpacity
-                    style={{
-                        position:'absolute',
-                        right:cfn.picWidth(0),
-                        top: cfn.picHeight(65),
-                        width:cfn.picWidth(70),
-                        height:cfn.picHeight(70),
-                        alignItems:'center',
-                        justifyContent:'center',
-                        zIndex:2,
-                    }}>
-                    <Image source={search_icon}
-                           style={{width:cfn.picWidth(40),height:cfn.picHeight(40),resizeMode:'contain'
-                           }}/>
-                </TouchableOpacity>
+                {/*<TouchableOpacity*/}
+                    {/*style={{*/}
+                        {/*position:'absolute',*/}
+                        {/*right:cfn.picWidth(0),*/}
+                        {/*top: cfn.picHeight(65),*/}
+                        {/*width:cfn.picWidth(70),*/}
+                        {/*height:cfn.picHeight(70),*/}
+                        {/*alignItems:'center',*/}
+                        {/*justifyContent:'center',*/}
+                        {/*zIndex:2,*/}
+                    {/*}}>*/}
+                    {/*<Image source={search_icon}*/}
+                           {/*style={{width:cfn.picWidth(40),height:cfn.picHeight(40),resizeMode:'contain'*/}
+                           {/*}}/>*/}
+                {/*</TouchableOpacity>*/}
                 <ScrollableTabView
-                    renderTabBar={() => <ScrollableTabBar style={{paddingRight:cfn.picWidth(70),}}/>}
+                    //renderTabBar={() => <ScrollableTabBar style={{paddingRight:cfn.picWidth(70),}}/>}
+                    renderTabBar={() => <ScrollableTabBar/>}
                     onChangeTab={(obj)=> this.getIndex(obj)}
                     tabBarBackgroundColor='#0F88EE'
                     tabBarActiveTextColor='#fff'

@@ -3,10 +3,13 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
+		"configureJPush": "node node_modules/jpush-react-native/JPushConfiguration.js",
 		"start": "node node_modules/react-native/local-cli/cli.js start",
 		"test": "jest"
 	},
 	"dependencies": {
+		"jcore-react-native": "^1.1.8-beta2",
+		"jpush-react-native": "^2.0.9",
 		"react": "16.0.0-alpha.12",
 		"react-native": "0.46.1",
 		"react-native-fetch-blob": "^0.10.6",
